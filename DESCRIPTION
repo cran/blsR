@@ -1,6 +1,6 @@
 Package: blsR
 Title: Make Requests from the Bureau of Labor Statistics API
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: 
     person(given = "Guillermo",
            family = "Roditi Dominguez",
@@ -17,13 +17,13 @@ URL: https://github.com/groditi/blsR
 BugReports: https://github.com/groditi/blsR/issues
 Encoding: UTF-8
 RoxygenNote: 7.1.2
-Imports: dplyr, httr, jsonlite, purrr, rlang
-Suggests: testthat (>= 3.0.0)
+Imports: dplyr, httr, purrr, rlang, readr
+Suggests: testthat (>= 3.0.0), zoo, jsonlite
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2021-10-25 07:31:15 UTC; guill
+Packaged: 2022-04-10 08:50:59 UTC; guill
 Author: Guillermo Roditi Dominguez [aut, cre]
     (<https://orcid.org/0000-0002-7127-8742>)
 Maintainer: Guillermo Roditi Dominguez <guillermo@newriverinvestments.com>
 Repository: CRAN
-Date/Publication: 2021-10-26 07:30:11 UTC
+Date/Publication: 2022-04-11 06:22:29 UTC
