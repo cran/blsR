@@ -1,12 +1,12 @@
-d2722ac10dfbcc10b0f43b9629237f54 *DESCRIPTION
+9f48ad8760e0e1ac84ab22dd6a162e45 *DESCRIPTION
 66db7e0d123cc25ecda8351a501ae0f8 *LICENSE
 6d9c6fc1781f1574456f4d7f3108ce57 *NAMESPACE
-cb93b45d104cd673898c54b90561ce4c *NEWS.md
+449c88f660199132c743df8be80c1938 *NEWS.md
 7a914f866fda27918ebf3bd2e39c9eee *R/blsR.R
 126696afd7d16f3e26b0ef413c5e62b2 *R/bls_request.R
 185b2ff7998f3cf692acebb291450fe3 *R/get_series.R
 5166b80b211c152d35a360f3d26f103b *R/get_series_table.R
-bbe21ecdc89a3151afe6a671aa2d862f *R/merge_tables.R
+e289c4f2a944cfd2e41203cf3f9981de *R/merge_tables.R
 3cbef78627d2a8b7a4f55270022631bb *R/queries.R
 afe449f73a01b4107265954e31d6a664 *README.md
 ef82e0cae87e43bfd1318b355af14b28 *man/blsR.Rd
@@ -22,7 +22,7 @@ f39a0d18406a6f5500ac2f0e338fb9d1 *man/get_n_series_table.Rd
 0d970b42e461d3f9eb8b6b61c4def580 *man/get_series_table.Rd
 cfc8a2cd3e02de12b40da90c9b554699 *man/get_series_tables.Rd
 952bb2b6b4e11dea6d5df105f45a0f6d *man/get_survey_info.Rd
-2926ed1e95996b4a864d32c6243ac929 *man/merge_tables.Rd
+1b943598e8b36e6e47e771003562f665 *man/merge_tables.Rd
 90cf1e228f27a0b80931479b74a9e544 *man/merge_tidy_tables.Rd
 b2fea7ebdeefae72cf8fe90af3ac7f05 *man/query_all_surveys.Rd
 09bea144ed4e7d4052fc39ff7e607bf9 *man/query_latest_observation.Rd
@@ -33,6 +33,6 @@ a858677f231af3248fc0917fc767b516 *man/query_series.Rd
 cfa95e65eed3b055c107bcd56e5f97ea *man/tidy_periods.Rd
 c55e151abe14fd2705654d6ecb633008 *man/tidy_table_as_zoo.Rd
 a42380b5b72d10b4cdaf4cd09d9ce8ea *tests/testthat.R
-1c409977d3c6832d0d2103bf1c7f29e2 *tests/testthat/test-merge.R
+a10adea89390a249c8792b1f7255760f *tests/testthat/test-merge.R
 8bb29027190ff4e3f33c537b7b25d269 *tests/testthat/test-queries.R
 65de8880efbabf97af493540257253db *tests/testthat/test-requests.R
