@@ -3,12 +3,12 @@
 }
 
 .build_payload <- function(
-  series=c(), start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
+  series=c(), start_year=NULL, end_year=NULL, catalog = FALSE, calculations = FALSE,
   annualaverage = FALSE, aspects = FALSE){
   # tell the API what we want
-  if(is.na(start_year) != is.na(end_year))
-    rlang::abort('start_year and end_year must both be specified or both be NA')
-  if(!is.na(start_year) ){
+  if(rlang::is_bare_numeric(start_year, 1) != rlang::is_bare_numeric(end_year, 1))
+    rlang::abort('start_year and end_year must both be specified or both be NULL')
+  if(rlang::is_bare_numeric(start_year, 1)){
     if(start_year > end_year)
       rlang::abort('start year can not be greater than end year')
     if( (end_year - start_year)+1 > 20 ){
@@ -22,10 +22,9 @@
 
 
   payload <- list()
-  if(length(series) > 1) payload[['seriesid']] <- series
-  if(length(series) ==  1) payload[['seriesid']] <- c(series)
-  if(!is.na(start_year)) payload[['startyear']] <- start_year
-  if(!is.na(end_year)) payload[['endyear']] <- end_year
+  if(length(series) > 0) payload[['seriesid']] <- series
+  if(rlang::is_bare_numeric(start_year)) payload[['startyear']] <- start_year
+  if(rlang::is_bare_numeric(end_year)) payload[['endyear']] <- end_year
   if(isTRUE(catalog)) payload[['catalog']] <- catalog
   if(isTRUE(calculations)) payload[['calculations']] <- calculations
   if(isTRUE(annualaverage)) payload[['annualaverage']] <- annualaverage
@@ -36,9 +35,10 @@
 
 #' Create a query for a single time series
 #'
-#' @param series_id BLS series ID
-#' @param start_year numeric 4-digit year
-#' @param end_year numeric 4-digit year
+#' @param series_id Character scalar BLS series ID
+#' @param start_year,end_year numeric 4-digit years. While optional, they are
+#' strongly recommended. If one is provided, the other is mandatory. `end_year`
+#' must be greater than `start_year`
 #'
 #' @return list of query parameters
 #'
@@ -51,7 +51,7 @@
 #' unemployment_rate_query <- query_series('LNS14000000')
 #' unemployment_rate_query <- query_series('LNS14000000', 2005, 2010)
 #'
-query_series <- function(series_id, start_year=NA, end_year=NA){
+query_series <- function(series_id, start_year=NULL, end_year=NULL){
   #query a singular series (easy GET from JSON URI)
   api_url <- .api_uri_root()
   url_path <- c(api_url$path, 'timeseries','data', series_id)
@@ -66,13 +66,26 @@ query_series <- function(series_id, start_year=NA, end_year=NA){
 
 #' Create a query to retrieve one or more time series and their catalog data
 #'
-#' @param series vector of BLS series IDs
-#' @param start_year numeric 4-digit year
-#' @param end_year numeric 4-digit year
-#' @param catalog boolean
-#' @param calculations boolean
-#' @param annualaverage boolean
-#' @param aspects boolean
+#' @inheritParams query_series
+#' @param series_ids Character vector of BLS series IDs
+#' @param catalog boolean. If set to `TRUE`, element item in the list returned
+#'   may include a named item `catalog`, a named list containing descriptive
+#'   information about the series. Not all series have a catalog entry
+#'   available.
+#' @param calculations boolean. If set to `TRUE`, each element in the `data`
+#'   list for each series returned may include an additional named element
+#'   `calculations`, a named list containing two items, `net_changes` and
+#'   `pct_changes`, each of them a named list which may include items `1`, `3`,
+#'   `6`, `12` which represent 1, 3, 6, and 12 month net changes and percent
+#'   changes respectively. Not all data series will have enough data points to
+#'   include these calculations.
+#' @param annualaverage boolean. If set to `TRUE`, each `data` list may include
+#' an additional element for a an annual average of the time series, which is
+#' usually presented as month 13 in monthly data. Not all data series
+#' support this feature.
+#' @param aspects boolean. If set to `TRUE`, each item in the `data` list
+#' for each series returned may include an additional named element `aspects`,
+#' which will be a named list. Not all data series support this feature.
 #'
 #' @return list of query parameters
 #'
@@ -89,14 +102,14 @@ query_series <- function(series_id, start_year=NA, end_year=NA){
 #'
 #'
 query_n_series <- function(
-  series, start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
+  series_ids, start_year=NULL, end_year=NULL, catalog = FALSE, calculations = FALSE,
   annualaverage = FALSE, aspects = FALSE){
   #request multiple series and optional series-level information
 
   api_url <- .api_uri_root()
   url_path <- c(api_url$path, 'timeseries','data')
   payload <- .build_payload(
-    series, start_year, end_year, catalog, calculations, annualaverage, aspects
+    series_ids, start_year, end_year, catalog, calculations, annualaverage, aspects
   )
 
   list(
@@ -109,7 +122,7 @@ query_n_series <- function(
 
 #' Create a query to retrieve popular series
 #'
-#' @param survey_id string optional
+#' @param survey_id BLS survey abbreviation (two letter code)
 #'
 #' @return list of query parameters
 #'
@@ -121,11 +134,11 @@ query_n_series <- function(
 #' popular_series_query <- query_popular_series()
 #' popular_labor_force_series <- query_popular_series('LN')
 #'
-query_popular_series <- function(survey_id = NA){
+query_popular_series <- function(survey_id = NULL){
   #query for popular series (optional: from a specific survey)
   api_url <- .api_uri_root()
   url_path <- c(api_url$path, 'timeseries','popular')
-  if(!is.na(survey_id))
+  if(rlang::is_string(survey_id))
     api_url <- httr::modify_url(api_url, query = list(survey = survey_id))
 
   list(
